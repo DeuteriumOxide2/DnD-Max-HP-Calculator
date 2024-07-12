@@ -5,9 +5,15 @@ def Calculate_max_hp() -> None:
   hit_points : int = 8 + constitution
   level : int = Get_level()
   hit_die : int = Get_hit_die()
+  tough_feat : bool = Get_tough_feat()
+  
+  if tough_feat:
+    hit_points += 2
 
   for i in range(level):
     hit_points += random.randint(1, hit_die)
+    if tough_feat:
+      hit_points += 2
   print(f'your character\'s max hp should be {hit_points}')
 
 def Get_constitution() -> int:
@@ -45,5 +51,19 @@ def Get_hit_die() -> int:
       continue
     break
   return hit_die
+
+def Get_tough_feat() -> bool:
+  tough_feat = False
+  while True:
+    try:
+      tough_feat_input = input("Do you have the tough feat (y/n)? \n")
+      tough_feat = True if tough_feat_input == "y" else False if tough_feat_input == "n" else 3
+      if tough_feat == 3:
+        raise ValueError
+    except ValueError:
+      print(f"Error: {tough_feat_input} is not a valid input, input must be y or n")
+      continue
+    break
+  return tough_feat
 
 Calculate_max_hp()

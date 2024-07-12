@@ -2,4 +2,4 @@ Just a small calculator I made for my own purposes, but sharing it in case anyon
 
 Future additions include: 
 1. Multiclass support
-2. Tough feat support
+2. Ability to choose between new character or adding levels to existing character

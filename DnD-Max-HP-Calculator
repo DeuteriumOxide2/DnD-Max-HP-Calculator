@@ -1,17 +1,17 @@
 import random
 
 def Calculate_max_hp() -> None:
-  constitution : int = Get_constitution()
-  hit_points : int = 8 + constitution
   level : int = Get_level()
+  constitution : int = Get_constitution()
   hit_die : int = Get_hit_die()
+  hit_points : int = hit_die + constitution
   tough_feat : bool = Get_tough_feat()
   
   if tough_feat:
     hit_points += 2
 
   for i in range(level):
-    hit_points += random.randint(1, hit_die)
+    hit_points += random.randint(1, hit_die) + constitution
     if tough_feat:
       hit_points += 2
   print(f'your character\'s max hp should be {hit_points}')
@@ -56,14 +56,64 @@ def Get_tough_feat() -> bool:
   tough_feat = False
   while True:
     try:
-      tough_feat_input = input("Do you have the tough feat (y/n)? \n")
+      tough_feat_input = input("Does your character have the tough feat (y/n)? \n")
       tough_feat = True if tough_feat_input == "y" else False if tough_feat_input == "n" else 3
       if tough_feat == 3:
         raise ValueError
     except ValueError:
-      print(f"Error: {tough_feat_input} is not a valid input, input must be y or n")
+      print(f'Error: "{tough_feat_input}" is not a valid input, input must be y or n')
       continue
     break
   return tough_feat
 
-Calculate_max_hp()
+def Check_multiclass():
+  multiclass = False
+  while True:
+    try:
+      multiclass_input = input("Is you character multiclassed (y/n)? \n")
+      multiclass = True if multiclass_input == "y" else False if multiclass_input == "n" else 3
+      if multiclass == 3:
+        raise ValueError
+    except ValueError:
+      print(f'Error: "{multiclass_input}" is not a valid input, input must be y or n')
+      continue
+    break
+  return multiclass
+
+def Calculate_max_hp_multiclass() -> None:
+  level : int = Get_level()
+  constitution : int = Get_constitution()
+  hit_die : list = Get_hit_die_multiclass(level)
+  hit_points : int = hit_die[0] + constitution
+  tough_feat : bool = Get_tough_feat()
+  
+  if tough_feat:
+    hit_points += 2
+
+  for i in range(level):
+    hit_points += random.randint(1, hit_die[i + 1]) + constitution
+    if tough_feat:
+      hit_points += 2
+  print(f'your character\'s max hp should be {hit_points}')
+
+def Get_hit_die_multiclass(level) -> list:
+  hit_die : list = []
+  for i in range(level + 1):
+    while True:
+      try:
+        hit_die_input = 4
+        if i == 0:
+          hit_die_input = input(f'take your character\'s hit die for level {i + 1}, type in the number after the d (ex: hit die is "1d6", type in "6") and hit enter \n')
+        else:
+          hit_die_input = input(f"level {i + 1} hit die \n")
+        hit_die.append(int(hit_die_input))
+      except ValueError:
+        print(f"Error: {hit_die_input} is not a whole number, input must be a whole number")
+        continue
+      break
+  return hit_die
+
+if not Check_multiclass():
+  Calculate_max_hp()
+else:
+  Calculate_max_hp_multiclass()

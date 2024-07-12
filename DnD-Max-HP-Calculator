@@ -1,0 +1,49 @@
+import random
+
+def Calculate_max_hp() -> None:
+  constitution : int = Get_constitution()
+  hit_points : int = 8 + constitution
+  level : int = Get_level()
+  hit_die : int = Get_hit_die()
+
+  for i in range(level):
+    hit_points += random.randint(1, hit_die)
+  print(f'your character\'s max hp should be {hit_points}')
+
+def Get_constitution() -> int:
+  constitution = 1
+  while True:
+    try:
+      constitution_input = input("please type in your character's consitution modifier and hit enter \n")
+      constitution = int(constitution_input)
+    except ValueError:
+      print(f"Error: {constitution_input} is not a whole number, input must be a whole number")
+      continue
+    break
+  return constitution
+
+def Get_level() -> int:
+  level = 1
+  while True:
+    try:
+      level_input = input("please type in your character's level and hit enter \n")
+      level = int(level_input) - 1
+    except ValueError:
+      print(f"Error: {level_input} is not a whole number, input must be a whole number")
+      continue
+    break
+  return level
+
+def Get_hit_die() -> int:
+  hit_die = 4
+  while True:
+    try:
+      hit_die_input = input('take your character\'s hit die, type in the number after the d (ex: hit die is "1d6", type in "6") and hit enter \n')
+      hit_die = int(hit_die_input)
+    except ValueError:
+      print(f'Error: {hit_die_input} is not a whole number, input must be a whole number')
+      continue
+    break
+  return hit_die
+
+Calculate_max_hp()

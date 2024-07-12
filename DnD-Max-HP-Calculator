@@ -70,7 +70,7 @@ def Check_multiclass():
   multiclass = False
   while True:
     try:
-      multiclass_input = input("Is you character multiclassed (y/n)? \n")
+      multiclass_input = input("Is your character multiclassed (y/n)? \n")
       multiclass = True if multiclass_input == "y" else False if multiclass_input == "n" else 3
       if multiclass == 3:
         raise ValueError

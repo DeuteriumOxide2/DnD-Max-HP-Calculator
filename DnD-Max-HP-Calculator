@@ -113,7 +113,51 @@ def Get_hit_die_multiclass(level) -> list:
       break
   return hit_die
 
-if not Check_multiclass():
-  Calculate_max_hp()
-else:
-  Calculate_max_hp_multiclass()
+def Check_new_character() -> bool:
+  new_character = True
+  while True:
+    try:
+      new_character_input = input("Is your character a new character (y/n)? \n")
+      new_character = True if new_character_input == "y" else False if new_character_input == "n" else 3
+      if new_character == 3:
+        raise ValueError
+    except ValueError:
+      print(f"Error: {new_character_input} is not a valid input, input must be y or n")
+      continue
+    break
+  return new_character
+
+def Get_hit_points() -> int:
+  hit_points : int = 0
+  while True:
+    try:
+      hit_points_input = input("how many hit points does your character currently have? \n")
+      hit_points = int(hit_points_input)
+    except ValueError:
+      print(f'Error: {hit_points_input} is not a whole number, input must be a whole number')
+      continue
+    break
+  return hit_points
+
+
+def Calculate_max_hp_level_up():
+  constitution : int = Get_constitution()
+  hit_die : int = Get_hit_die()
+  hit_points : int = Get_hit_points()
+  tough_feat : bool = Get_tough_feat()
+
+  if tough_feat:
+    hit_points += 2
+  
+  hit_points += random.randint(1, hit_die) + constitution
+  print(f'your character\'s max hp should be {hit_points}')
+
+def __main__() -> None:
+  if not Check_new_character():
+    Calculate_max_hp_level_up()
+  elif not Check_multiclass():
+    Calculate_max_hp()
+  else:
+    Calculate_max_hp_multiclass()
+
+__main__()
